@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sessions and Events - Women in Manufacturing @ Microsoft</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            background-color: #f8f9fa;
+            color: #333;
+        }
+
+        /* Banner Section */
+        .banner {
+            background: linear-gradient(135deg, #8b5a8c, #c17a74, #d4a574);
+            color: white;
+            padding: 2rem 0;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .banner-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            max-height: 120px;
+            width: auto;
+        }
+
+        .banner h1 {
+            font-size: 3.2rem;
+            font-weight: 300;
+            margin: 0;
+        }
+
+        .banner .subtitle {
+            font-size: 1.4rem;
+            opacity: 0.9;
+            margin-top: 0.5rem;
+        }
+
+        /* Navigation */
+        .nav-bar {
+            background: rgba(139, 90, 140, 0.1);
+            padding: 1rem 0;
+            text-align: center;
+            border-bottom: 1px solid rgba(193, 122, 116, 0.2);
+        }
+
+        .nav-link {
+            color: #8b5a8c;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: #c17a74;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        /* Page Title */
+        .page-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .page-title h2 {
+            color: #8b5a8c;
+            font-size: 2.5rem;
+            font-weight: 300;
+            margin-bottom: 1rem;
+        }
+
+        .page-title p {
+            color: #666;
+            font-size: 1.2rem;
+            font-style: italic;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Back to Home Button */
+        .back-home {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: linear-gradient(135deg, #8b5a8c, #c17a74);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(139, 90, 140, 0.3);
+            z-index: 1000;
+        }
+
+        .back-home:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(139, 90, 140, 0.4);
+            color: white;
+            text-decoration: none;
+        }
+
+        .back-home::before {
+            content: '← ';
+            margin-right: 0.5rem;
+        }
+
+        /* Section Headers */
+        .section-header {
+            background: linear-gradient(135deg, #8b5a8c, #c17a74);
+            color: white;
+            padding: 1.5rem 2rem;
+            border-radius: 12px;
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin: 3rem 0 2rem 0;
+            text-align: center;
+            box-shadow: 0 6px 20px rgba(139, 90, 140, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .section-header.upcoming::before {
+            content: '🗓️';
+            font-size: 2rem;
+        }
+
+        .section-header.past::before {
+            content: '📹';
+            font-size: 2rem;
+        }
+
+        /* Event Grid */
+        .events-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2.5rem;
+            margin-top: 2rem;
+        }
+
+        /* Event Card */
+        .event-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+            border-radius: 16px;
+            padding: 2.5rem;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .event-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: linear-gradient(90deg, #8b5a8c, #c17a74, #d4a574);
+            border-radius: 16px 16px 0 0;
+        }
+
+        .event-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(139, 90, 140, 0.2);
+            border-color: rgba(193, 122, 116, 0.3);
+        }
+
+        /* Event Header */
+        .event-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .event-icon {
+            font-size: 2.5rem;
+            filter: grayscale(20%);
+        }
+
+        .event-date {
+            background: linear-gradient(135deg, #8b5a8c, #c17a74);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            box-shadow: 0 3px 10px rgba(139, 90, 140, 0.3);
+            margin-left: auto;
+        }
+
+        /* Event Content */
+        .event-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #8b5a8c;
+            margin-bottom: 1rem;
+            line-height: 1.4;
+        }
+
+        .event-description {
+            font-family: 'Georgia', 'Times New Roman', serif;
+            font-style: italic;
+            color: #555;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Video Container */
+        .video-container {
+            position: relative;
+            width: 100%;
+            height: 250px;
+            background: #000;
+            border-radius: 12px;
+            overflow: hidden;
+            margin-top: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .video-container video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Removed video overlay that was blocking controls */
+        .video-container:hover {
+            box-shadow: 0 6px 20px rgba(139, 90, 140, 0.3);
+            transform: translateY(-2px);
+            transition: all 0.3s ease;
+        }
+
+        /* Event Stats */
+        .event-stats {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            background: rgba(193, 122, 116, 0.1);
+            color: #8b5a8c;
+            padding: 0.5rem 1rem;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        /* Upcoming Event Styling */
+        .upcoming-event {
+            border-left: 6px solid #c17a74;
+            background: linear-gradient(135deg, #fff 0%, #f0f8ff 100%);
+        }
+
+        .upcoming-event .event-title {
+            color: #c17a74;
+        }
+
+        /* Brand separator styling */
+        .brand-separator {
+            text-align: center;
+            margin: 3rem 0;
+            padding: 1rem 0;
+        }
+
+        .brand-accent {
+            max-width: 120px;
+            opacity: 0.25;
+            filter: grayscale(10%);
+            transition: all 0.3s ease;
+        }
+
+        .brand-accent:hover {
+            opacity: 0.4;
+            transform: scale(1.05);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .banner-content {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .banner h1 {
+                font-size: 2.4rem;
+            }
+
+            .container {
+                padding: 2rem 1rem;
+            }
+
+            .page-title h2 {
+                font-size: 2rem;
+            }
+
+            .events-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .event-card {
+                padding: 2rem;
+            }
+
+            .event-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .event-date {
+                margin-left: 0;
+                margin-top: 0.5rem;
+            }
+
+            .video-container {
+                height: 200px;
+            }
+
+            .back-home {
+                position: relative;
+                top: auto;
+                left: auto;
+                display: inline-block;
+                margin-bottom: 2rem;
+            }
+
+            .section-header {
+                font-size: 1.4rem;
+                padding: 1rem 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Back to Home Button -->
+    <a href="index.html" class="back-home">Back to Home</a>
+
+    <!-- Banner Section -->
+    <div class="banner">
+        <div class="banner-content">
+            <img src="image%20(7).png" alt="Women in Manufacturing Logo" class="logo">
+            <div>
+                <h1>Past Events & Sessions</h1>
+                <div class="subtitle">Women in Manufacturing @ Microsoft</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="nav-bar">
+        <a href="index.html" class="nav-link">← Return to Main Site</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Page Title -->
+        <div class="page-title">
+            <h2>Our Past Events & Recordings</h2>
+            <p>Revisit inspiring sessions from our Women in Manufacturing community. Access recordings and insights from our events featuring industry leaders, career development sessions, and strategic discussions shaping the future of manufacturing.</p>
+        </div>
+
+        <!-- Brand separator -->
+        <div class="brand-separator">
+            <img src="image%20(2).png" alt="Women in Manufacturing Branding" class="brand-accent">
+        </div>
+
+        <!-- Past Events Section -->
+        <div class="section-header past" id="past-events">Past Events & Recordings</div>
+        <div class="events-grid">
+            <!-- Event 1: Kick-Off & Executive Panel -->
+            <div class="event-card">
+                <div class="event-header">
+                    <div class="event-icon">🚀</div>
+                    <div class="event-date">June 10, 2025</div>
+                </div>
+                <div class="event-title">WiM @ Microsoft: Kick-Off & Executive Panel Discussion</div>
+                <div class="event-description">
+                    Our inaugural event marking the official launch of Women in Manufacturing at Microsoft. Features an executive panel discussion with industry leaders sharing insights on the future of manufacturing and the importance of diversity in driving innovation.
+                </div>
+                <div class="video-container">
+                    <video controls preload="metadata">
+                        <source src="Recordings/Microsoft%20-%20WiM%20Kick-off%20%26%20Executive%20Panel%20Discussion-2025-06-25.mp4" type="video/mp4">
+                        <p>Your browser doesn't support HTML5 video. <a href="Recordings/Microsoft%20-%20WiM%20Kick-off%20%26%20Executive%20Panel%20Discussion-2025-06-25.mp4">Download the video</a> instead.</p>
+                    </video>
+                </div>
+                <div class="event-stats">
+                    <div class="stat-item">
+                        <span>🎬</span> Recording Available
+                    </div>
+                    <div class="stat-item">
+                        <span>👥</span> Executive Panel
+                    </div>
+                    <div class="stat-item">
+                        <span>🎉</span> Launch Event
+                    </div>
+                </div>
+            </div>
+
+            <!-- Event 2: Empowering Career Growth -->
+            <div class="event-card">
+                <div class="event-header">
+                    <div class="event-icon">📈</div>
+                    <div class="event-date">September 24, 2025</div>
+                </div>
+                <div class="event-title">WiM @ Microsoft: Empowering Career Growth</div>
+                <div class="event-description">
+                    A focused session on career development strategies for women in manufacturing. Features practical advice, mentorship insights, and success stories from leaders who have navigated and excelled in manufacturing careers within Microsoft and beyond.
+                </div>
+                <div class="video-container">
+                    <video controls preload="metadata">
+                        <source src="Recordings/Women%20in%20Manufacturing%20at%20Microsoft%20%28WiM%29%20Empowering%20Career%20Growth-20250924_164540UTC-Meeting%20Recording%20%281%29.mp4" type="video/mp4">
+                        <p>Your browser doesn't support HTML5 video. <a href="Recordings/Women%20in%20Manufacturing%20at%20Microsoft%20%28WiM%29%20Empowering%20Career%20Growth-20250924_164540UTC-Meeting%20Recording%20%281%29.mp4">Download the video</a> instead.</p>
+                    </video>
+                </div>
+                <div class="event-stats">
+                    <div class="stat-item">
+                        <span>🎬</span> Recording Available
+                    </div>
+                    <div class="stat-item">
+                        <span>📈</span> Career Development
+                    </div>
+                    <div class="stat-item">
+                        <span>🎯</span> Professional Growth
+                    </div>
+                </div>
+            </div>
+
+            <!-- Event 3: Empowering the Future of Business -->
+            <div class="event-card">
+                <div class="event-header">
+                    <div class="event-icon">🚀</div>
+                    <div class="event-date">October 9, 2025</div>
+                </div>
+                <div class="event-title">WiM @ Microsoft: Empowering the Future of Business</div>
+                <div class="event-description">
+                    An inspiring session exploring how women in manufacturing are driving innovation and shaping the future of business. Discusses emerging trends, technological advances, and the critical role of diverse perspectives in manufacturing excellence.
+                </div>
+                <div class="video-container">
+                    <video controls preload="metadata">
+                        <source src="Recordings/Women%20in%20Manufacturing%20at%20Microsoft%20%28WiM%29%20Women%20Empowering%20the%20Future%20of%20Business-20251009_205711UTC-Meeting%20Recording.mp4" type="video/mp4">
+                        <p>Your browser doesn't support HTML5 video. <a href="Recordings/Women%20in%20Manufacturing%20at%20Microsoft%20%28WiM%29%20Women%20Empowering%20the%20Future%20of%20Business-20251009_205711UTC-Meeting%20Recording.mp4">Download the video</a> instead.</p>
+                    </video>
+                </div>
+                <div class="event-stats">
+                    <div class="stat-item">
+                        <span>🎬</span> Recording Available
+                    </div>
+                    <div class="stat-item">
+                        <span>🚀</span> Future Innovation
+                    </div>
+                    <div class="stat-item">
+                        <span>💼</span> Business Strategy
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
